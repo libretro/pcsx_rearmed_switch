@@ -67,6 +67,23 @@ else ifeq ($(platform),$(filter $(platform),ios-arm64))
     BUILTIN_GPU = peops
     TARGET := $(TARGET_NAME)_libretro_ios.dylib
 
+# Nintendo Switch (libnx)
+else ifeq ($(platform), switch)
+   #include $(DEVKITPRO)/libnx/switch_rules
+   CC = $(DEVKITPRO)/devkitA64/bin/aarch64-none-elf-gcc
+   CXX = $(DEVKITPRO)/devkitA64/bin/aarch64-none-elf-g++
+   AR = $(DEVKITPRO)/devkitA64/bin/aarch64-none-elf-ar
+   TARGET := $(TARGET_NAME)_libretro_$(platform).a
+   HAVE_VFS_FD = 0
+   CFLAGS += -fomit-frame-pointer -ffast-math -I/opt/devkitpro/libnx/include/ -fPIE -Wl,--allow-multiple-definition
+   #CFLAGS += -specs=$(LIBNX)/switch.specs
+   CFLAGS += -D__SWITCH__ -DNO_OS -DNO_DYLIB -DNO_SOCKET
+   CFLAGS += -DARM -march=armv8-a -mtune=cortex-a57 -mtp=soft -DHAVE_INTTYPES -DLSB_FIRST -DINLINE=inline -ffast-math -mcpu=cortex-a57+crc+fp+simd -ffunction-sections
+   CFLAGS += -Ifrontend/switch -ftree-vectorize -funroll-loops -fno-optimize-sibling-calls -DNO_SOCKET
+   LIBPTHREAD :=
+   USE_DYNAREC = 0
+   STATIC_LINKING=1
+
 else ifneq (,$(findstring ios,$(platform)))
 	ARCH := arm
 	USE_DYNAREC ?= 1
