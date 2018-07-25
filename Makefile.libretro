@@ -74,12 +74,14 @@ else ifeq ($(platform), switch)
    CXX = $(DEVKITPRO)/devkitA64/bin/aarch64-none-elf-g++
    AR = $(DEVKITPRO)/devkitA64/bin/aarch64-none-elf-ar
    TARGET := $(TARGET_NAME)_libretro_$(platform).a
+   ARCH := arm64
+   BUILTIN_GPU = unai
    HAVE_VFS_FD = 0
-   CFLAGS += -fomit-frame-pointer -ffast-math -I/opt/devkitpro/libnx/include/ -fPIE -Wl,--allow-multiple-definition
-   #CFLAGS += -specs=$(LIBNX)/switch.specs
-   CFLAGS += -D__SWITCH__ -DNO_OS -DNO_DYLIB -DNO_SOCKET
-   CFLAGS += -DARM -march=armv8-a -mtune=cortex-a57 -mtp=soft -DHAVE_INTTYPES -DLSB_FIRST -DINLINE=inline -ffast-math -mcpu=cortex-a57+crc+fp+simd -ffunction-sections
-   CFLAGS += -Ifrontend/switch -ftree-vectorize -funroll-loops -fno-optimize-sibling-calls -DNO_SOCKET
+   CFLAGS += -O3 -fomit-frame-pointer -ffast-math -I/opt/devkitpro/libnx/include/ -fPIE -Wl,--allow-multiple-definition
+   CFLAGS += -specs=$(DEVKITPRO)/libnx/switch.specs -DNO_OS -DNO_DYLIB -DNO_SOCKET -D__arm64__ -D__ARM_NEON__
+   CFLAGS += -D__SWITCH__
+   CFLAGS += -DARM -D__aarch64__=1 -march=armv8-a -mtune=cortex-a57 -mtp=soft -DHAVE_INTTYPES -DLSB_FIRST -DINLINE=inline -ffast-math -mcpu=cortex-a57+crc+fp+simd -ffunction-sections
+   CFLAGS += -Ifrontend/switch -ftree-vectorize
    LIBPTHREAD :=
    USE_DYNAREC = 0
    STATIC_LINKING=1
