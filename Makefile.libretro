@@ -22,6 +22,10 @@ AS ?= as
 CC_AS ?= $(CC)
 CFLAGS ?=
 
+CFLAGS += -DINLINE="static __inline__" -Dasm="__asm__ __volatile__" -DUSE_GPULIB=1
+USE_DYNAREC = 0
+BUILTIN_GPU = unai
+
 TARGET_NAME := pcsx_rearmed
 GIT_VERSION := " $(shell git rev-parse --short HEAD || echo unknown)"
 ifneq ($(GIT_VERSION)," unknown")
@@ -40,10 +44,13 @@ LIBM := -lm
 MMAP_WIN32 = 0
 EXTRA_LDFLAGS =
 
+
 # Unix
 ifeq ($(platform), unix)
 	TARGET := $(TARGET_NAME)_libretro.so
 	fpic := -fPIC
+	BUILTIN_GPU = unai
+	USE_DYNAREC = 0
 ifneq ($(findstring SunOS,$(shell uname -s)),)
 	CC = gcc
 endif
@@ -82,6 +89,26 @@ else ifeq ($(platform),$(filter $(platform),ios-arm64))
 	HAVE_NEON = 0
 	BUILTIN_GPU = peops
 	TARGET := $(TARGET_NAME)_libretro_ios.dylib
+
+# Nintendo Switch (libnx)
+else ifeq ($(platform), libnx)
+   export DEPSDIR := $(CURDIR)/
+   include $(DEVKITPRO)/libnx/switch_rules
+   TARGET := $(TARGET_NAME)_libretro_$(platform).a
+   ARCH := arm64
+   BUILTIN_GPU = unai
+   HAVE_VFS_FD = 0
+   DEFINES_THREAD := -Dpthread_t=Thread -Dpthread_mutex_t=Mutex -Dpthread_mutexattr_t='void*' -Dpthread_attr_t=int -Dpthread_cond_t=CondVar -Dpthread_condattr_t='int' -D_SYS__PTHREADTYPES_H_
+   CFLAGS += -O3 -fomit-frame-pointer -ffast-math -I$(DEVKITPRO)/libnx/include/ -fPIE -Wl,--allow-multiple-definition -include $(LIBNX)/include/switch.h
+   CFLAGS += -specs=$(DEVKITPRO)/libnx/switch.specs -DNO_OS -DNO_DYLIB -DNO_SOCKET -D__arm64__ -D__ARM_NEON__
+   CFLAGS += -D__SWITCH__
+   CFLAGS += -DARM -D__aarch64__=1 -march=armv8-a -mtune=cortex-a57 -mtp=soft -DHAVE_INTTYPES -DLSB_FIRST -DINLINE=inline -ffast-math -mcpu=cortex-a57+crc+fp+simd -ffunction-sections
+   CFLAGS += -Ifrontend/switch -ftree-vectorize
+   CFLAGS += $(DEFINES_THREAD)
+   OBJS += frontend/switch/pthread.o
+   LIBPTHREAD :=
+   USE_DYNAREC = 0
+   STATIC_LINKING=1
 
 else ifneq (,$(findstring ios,$(platform)))
 	ARCH := arm

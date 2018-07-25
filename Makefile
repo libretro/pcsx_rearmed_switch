@@ -9,7 +9,7 @@ else
 ifeq ($(platform), vita)
 CFLAGS += -O3 -DNDEBUG
 else
-CFLAGS += -O2 -DNDEBUG
+CFLAGS += -O3 -DNDEBUG
 endif
 endif
 CXXFLAGS += $(CFLAGS)
@@ -151,7 +151,7 @@ OBJS += plugins/gpu_unai/gpulib_if.o
 ifeq "$(ARCH)" "arm"
 OBJS += plugins/gpu_unai/gpu_arm.o
 endif
-plugins/gpu_unai/gpulib_if.o: CFLAGS += -DREARMED -O3 
+plugins/gpu_unai/gpulib_if.o: CFLAGS += -DREARMED -O3
 CC_LINK = $(CXX)
 endif
 
@@ -315,7 +315,7 @@ frontend/libpicofe/%.c:
 	@exit 1
 
 libpcsxcore/gte_nf.o: libpcsxcore/gte.c
-	$(CC) -c -o $@ $^ $(CFLAGS) -DFLAGLESS
+	$(CC) -c -o $@ $^ $(CFLAGS)
 
 frontend/revision.h: FORCE
 	@(git describe || echo) | sed -e 's/.*/#define REV "\0"/' > $@_

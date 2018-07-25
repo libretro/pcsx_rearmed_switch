@@ -15,6 +15,10 @@
 #include <sys/syscall.h>
 #endif
 
+#ifdef SWITCH
+#include <switch.h>
+#endif
+
 #include "../libpcsxcore/misc.h"
 #include "../libpcsxcore/psxcounters.h"
 #include "../libpcsxcore/psxmem_map.h"
@@ -37,6 +41,11 @@
 #ifdef _3DS
 #include "3ds/3ds_utils.h"
 #endif
+
+//#ifdef SWITCH
+//#include <switch.h>
+//#endif
+
 
 #define PORTS_NUMBER 8
 
@@ -2063,7 +2072,7 @@ void retro_init(void)
 
 #ifdef _3DS
    vout_buf = linearMemAlign(VOUT_MAX_WIDTH * VOUT_MAX_HEIGHT * 2, 0x80);
-#elif defined(_POSIX_C_SOURCE) && (_POSIX_C_SOURCE >= 200112L) && !defined(VITA)
+#elif defined(_POSIX_C_SOURCE) && (_POSIX_C_SOURCE >= 200112L) && !defined(VITA) && !defined(__SWITCH__)
 	posix_memalign(&vout_buf, 16, VOUT_MAX_WIDTH * VOUT_MAX_HEIGHT * 2);
 #else
 	vout_buf = malloc(VOUT_MAX_WIDTH * VOUT_MAX_HEIGHT * 2);
