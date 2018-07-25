@@ -11,3 +11,6 @@ frontend/revision.h
 tools
 .pcsx/
 obj/
+
+# Switch
+*.d

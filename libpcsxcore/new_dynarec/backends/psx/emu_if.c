@@ -19,10 +19,6 @@
 
 #include "../../../gte.h"
 
-#define FLAGLESS
-#include "../../../gte.h"
-#undef  FLAGLESS
-
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof(x[0]))
 
 //#define evprintf printf
@@ -198,6 +194,7 @@ void new_dyna_freeze(void *f, int mode)
 /* GTE stuff */
 void *gte_handlers[64];
 
+#ifdef FLAGLESS
 void *gte_handlers_nf[64] = {
 	NULL      , gteRTPS_nf , NULL       , NULL      , NULL     , NULL       , gteNCLIP_nf, NULL      , // 00
 	NULL      , NULL       , NULL       , NULL      , gteOP_nf , NULL       , NULL       , NULL      , // 08
@@ -208,6 +205,18 @@ void *gte_handlers_nf[64] = {
 	gteRTPT_nf, NULL       , NULL       , NULL      , NULL     , NULL       , NULL       , NULL      , // 30
 	NULL      , NULL       , NULL       , NULL      , NULL     , gteGPF_nf  , gteGPL_nf  , gteNCCT_nf, // 38
 };
+#else
+void *gte_handlers_nf[64] = {
+	NULL      , gteRTPS , NULL       , NULL      , NULL     , NULL       , gteNCLIP, NULL      , // 00
+	NULL      , NULL       , NULL       , NULL      , gteOP , NULL       , NULL       , NULL      , // 08
+	gteDPCS, gteINTPL, gteMVMVA, gteNCDS, gteCDP, NULL       , gteNCDT , NULL      , // 10
+	NULL      , NULL       , NULL       , gteNCCS, gteCC , NULL       , gteNCS  , NULL      , // 18
+	gteNCT , NULL       , NULL       , NULL      , NULL     , NULL       , NULL       , NULL      , // 20
+	gteSQR , gteDCPL , gteDPCT , NULL      , NULL     , gteAVSZ3, gteAVSZ4, NULL      , // 28 
+	gteRTPT, NULL       , NULL       , NULL      , NULL     , NULL       , NULL       , NULL      , // 30
+	NULL      , NULL       , NULL       , NULL      , NULL     , gteGPF  , gteGPL  , gteNCCT, // 38
+};
+#endif
 
 const char *gte_regnames[64] = {
 	NULL  , "RTPS" , NULL   , NULL  , NULL , NULL   , "NCLIP", NULL  , // 00
