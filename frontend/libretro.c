@@ -14,7 +14,6 @@
 #include <unistd.h>
 #include <sys/syscall.h>
 #endif
-#include <switch.h>
 
 #include "../libpcsxcore/misc.h"
 #include "../libpcsxcore/psxcounters.h"
@@ -37,6 +36,11 @@
 #ifdef _3DS
 #include "3ds/3ds_utils.h"
 #endif
+
+//#ifdef SWITCH
+//#include <switch.h>
+//#endif
+
 
 #define PORTS_NUMBER 8
 

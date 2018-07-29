@@ -40,6 +40,7 @@ EXTRA_LDFLAGS =
 ifeq ($(platform), unix)
 	TARGET := $(TARGET_NAME)_libretro.so
 	fpic := -fPIC
+	BUILTIN_GPU = unai
 ifneq ($(findstring SunOS,$(shell uname -s)),)
 	CC = gcc
 endif
