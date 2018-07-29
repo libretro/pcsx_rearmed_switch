@@ -1,6 +1,6 @@
 # Makefile for PCSX ReARMed (libretro)
 
-DEBUG=0
+DEBUG=1
 
 ifeq ($(platform),)
 	platform = unix
@@ -21,6 +21,7 @@ AS ?= as
 CC_AS ?= $(CC)
 CFLAGS ?=
 
+CFLAGS += -DINLINE="static __inline__" -Dasm="__asm__ __volatile__" -g -ggdb -O0
 TARGET_NAME := pcsx_rearmed
 GIT_VERSION := " $(shell git rev-parse --short HEAD || echo unknown)"
 ifneq ($(GIT_VERSION)," unknown")
@@ -36,11 +37,13 @@ endif
 MMAP_WIN32=0
 EXTRA_LDFLAGS =
 
+
 # Unix
 ifeq ($(platform), unix)
 	TARGET := $(TARGET_NAME)_libretro.so
 	fpic := -fPIC
 	BUILTIN_GPU = unai
+	USE_DYNAREC = 0
 ifneq ($(findstring SunOS,$(shell uname -s)),)
 	CC = gcc
 endif
