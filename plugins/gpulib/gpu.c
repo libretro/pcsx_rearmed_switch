@@ -228,8 +228,8 @@ long GPUinit(void)
   ret  = vout_init();
   ret |= renderer_init();
 
-  //gpu.state.frame_count = &gpu.zero;
-  //gpu.state.hcnt = &gpu.zero;
+  gpu.state.frame_count = &gpu.zero;
+  gpu.state.hcnt = &gpu.zero;
   gpu.frameskip.active = 0;
   gpu.cmd_len = 0;
   do_reset();

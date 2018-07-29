@@ -1,6 +1,6 @@
 # Makefile for PCSX ReARMed (libretro)
 
-DEBUG=1
+DEBUG=0
 
 ifeq ($(platform),)
 	platform = unix
@@ -21,7 +21,8 @@ AS ?= as
 CC_AS ?= $(CC)
 CFLAGS ?=
 
-CFLAGS += -DINLINE="static __inline__" -Dasm="__asm__ __volatile__" -g -ggdb -O0
+CFLAGS += -DINLINE="static __inline__" -Dasm="__asm__ __volatile__"
+
 TARGET_NAME := pcsx_rearmed
 GIT_VERSION := " $(shell git rev-parse --short HEAD || echo unknown)"
 ifneq ($(GIT_VERSION)," unknown")
