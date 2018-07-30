@@ -21,7 +21,7 @@ AS ?= as
 CC_AS ?= $(CC)
 CFLAGS ?=
 
-CFLAGS += -DINLINE="static __inline__" -Dasm="__asm__ __volatile__" -DUSE_GPULIB=1
+CFLAGS += -DINLINE="static __inline__" -Dasm="__asm__ __volatile__"
 
 TARGET_NAME := pcsx_rearmed
 GIT_VERSION := " $(shell git rev-parse --short HEAD || echo unknown)"
@@ -74,22 +74,25 @@ else ifeq ($(platform),$(filter $(platform),ios-arm64))
 
 # Nintendo Switch (libnx)
 else ifeq ($(platform), switch)
-   #include $(DEVKITPRO)/libnx/switch_rules
-   CC = $(DEVKITPRO)/devkitA64/bin/aarch64-none-elf-gcc
-   CXX = $(DEVKITPRO)/devkitA64/bin/aarch64-none-elf-g++
-   AR = $(DEVKITPRO)/devkitA64/bin/aarch64-none-elf-ar
-   TARGET := $(TARGET_NAME)_libretro_$(platform).a
-   ARCH := arm64
-   BUILTIN_GPU = unai
-   HAVE_VFS_FD = 0
-   CFLAGS += -O3 -fomit-frame-pointer -ffast-math -I$(DEVKITPRO)/libnx/include/ -fPIE -Wl,--allow-multiple-definition
-   CFLAGS += -specs=$(DEVKITPRO)/libnx/switch.specs -DNO_OS -DNO_DYLIB -DNO_SOCKET -D__arm64__ -D__ARM_NEON__
-   CFLAGS += -D__SWITCH__
-   CFLAGS += -DARM -D__aarch64__=1 -march=armv8-a -mtune=cortex-a57 -mtp=soft -DHAVE_INTTYPES -DLSB_FIRST -DINLINE=inline -ffast-math -mcpu=cortex-a57+crc+fp+simd -ffunction-sections
-   CFLAGS += -Ifrontend/switch -ftree-vectorize
-   LIBPTHREAD :=
-   USE_DYNAREC = 0
-   STATIC_LINKING=1
+	#include $(DEVKITPRO)/libnx/switch_rules
+	CC = $(DEVKITPRO)/devkitA64/bin/aarch64-none-elf-gcc
+	CXX = $(DEVKITPRO)/devkitA64/bin/aarch64-none-elf-g++
+	AR = $(DEVKITPRO)/devkitA64/bin/aarch64-none-elf-ar
+	TARGET := $(TARGET_NAME)_libretro_$(platform).a
+	ARCH := arm64
+	BUILTIN_GPU = unai
+	HAVE_VFS_FD = 0
+	CFLAGS += -O3 -fomit-frame-pointer -ffast-math -I$(DEVKITPRO)/libnx/include/ -fPIE -Wl,--allow-multiple-definition
+	CFLAGS += -specs=$(DEVKITPRO)/libnx/switch.specs -DNO_OS -DNO_DYLIB -DNO_SOCKET -D__arm64__ -D__ARM_NEON__
+	CFLAGS += -D__SWITCH__
+	CFLAGS += -DARM -D__aarch64__=1 -march=armv8-a -mtune=cortex-a57 -mtp=soft -DHAVE_INTTYPES -DLSB_FIRST -DINLINE=inline -ffast-math -mcpu=cortex-a57+crc+fp+simd -ffunction-sections
+	CFLAGS += -Ifrontend/switch -ftree-vectorize
+	LIBPTHREAD :=
+	USE_DYNAREC = 0
+	STATIC_LINKING=1
+	# _nf is FLAGLESS undefined
+	CFLAGS += -DUSE_GPULIB=1
+	CFLAGS += -DFLAGLESS
 
 else ifneq (,$(findstring ios,$(platform)))
 	ARCH := arm

@@ -245,7 +245,7 @@ frontend/libpicofe/%.c:
 	@exit 1
 
 libpcsxcore/gte_nf.o: libpcsxcore/gte.c
-	$(CC) -c -o $@ $^ $(CFLAGS) -DFLAGLESS
+	$(CC) -c -o $@ $^ $(CFLAGS)
 
 frontend/revision.h: FORCE
 	@(git describe || echo) | sed -e 's/.*/#define REV "\0"/' > $@_

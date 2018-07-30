@@ -76,7 +76,6 @@ inline void gpuSetCLUT(u16 clut)
 ///////////////////////////////////////////////////////////////////////////////
 #ifndef USE_GPULIB
 
-#if 1
 // Handles GP0 draw settings commands 0xE1...0xE6
 static void gpuGP0Cmd_0xEx(gpu_unai_t &gpu_unai, u32 cmd_word)
 {
@@ -149,7 +148,6 @@ static void gpuGP0Cmd_0xEx(gpu_unai_t &gpu_unai, u32 cmd_word)
 	}
 }
 
-#endif
 void gpuSendPacketFunction(const int PRIM)
 {
 	//printf("0x%x\n",PRIM);
