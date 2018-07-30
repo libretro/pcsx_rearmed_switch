@@ -621,10 +621,20 @@ void renderer_set_interlace(int enable, int is_odd)
 {
 }
 
+#include "../frontend/plugin_lib.h"
 // Handle any gpulib settings applicable to gpu_unai:
-void renderer_set_config(const gpulib_config_t *config)
+//void renderer_set_config(const gpulib_config_t *config)
+void renderer_set_config(const struct rearmed_cbs *cbs)
 {
   gpu_unai.vram = (u16*)gpu.vram;
+  gpu_unai.config.lighting = !cbs->gpu_unai.no_light;
+  gpu_unai.config.blending = !cbs->gpu_unai.no_blend;
+  //force_interlace = cbs->gpu_unai.lineskip;
+  //enableAbbeyHack = cbs->gpu_unai.abe_hack;
+  //light = !cbs->gpu_unai.no_light;
+  //blend = !cbs->gpu_unai.no_blend;
+
+  //GPU_FrameBuffer = (u16 *)gpu.vram;
 }
 
 // vim:shiftwidth=2:expandtab
