@@ -14,7 +14,10 @@
 #include <unistd.h>
 #include <sys/syscall.h>
 #endif
-//#include <switch.h>
+
+#ifdef SWITCH
+#include <switch.h>
+#endif
 
 #include "../libpcsxcore/misc.h"
 #include "../libpcsxcore/psxcounters.h"
