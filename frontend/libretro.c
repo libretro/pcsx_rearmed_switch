@@ -15,6 +15,10 @@
 #include <sys/syscall.h>
 #endif
 
+#ifdef SWITCH
+#include <switch.h>
+#endif
+
 #include "../libpcsxcore/misc.h"
 #include "../libpcsxcore/psxcounters.h"
 #include "../libpcsxcore/psxmem_map.h"

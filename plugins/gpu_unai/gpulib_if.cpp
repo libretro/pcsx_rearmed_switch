@@ -25,18 +25,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../gpulib/gpu.h"
-#if 0
-#include "port.h"
-#endif
 #include "gpu_unai.h"
-
-static int linesInterlace;  /* internal lines interlace */
-static int force_interlace;
-
-static bool light = true; /* lighting */
-static bool blend = true; /* blending */
-static bool FrameToRead = false; /* load image in progress */
-static bool FrameToWrite = false; /* store image in progress */
 
 #define GPU_INLINE static inline __attribute__((always_inline))
 
@@ -67,8 +56,6 @@ int renderer_init(void)
 {
   memset((void*)&gpu_unai, 0, sizeof(gpu_unai));
   gpu_unai.vram = (u16*)gpu.vram;
-
-  printf("renderer_init %p\n", gpu_unai.vram);
 
   // Original standalone gpu_unai initialized TextureWindow[]. I added the
   //  same behavior here, since it seems unsafe to leave [2],[3] unset when
@@ -157,7 +144,6 @@ void renderer_notify_res_change(void)
   */
 }
 
-#if 0
 // Handles GP0 draw settings commands 0xE1...0xE6
 static void gpuGP0Cmd_0xEx(gpu_unai_t &gpu_unai, u32 cmd_word)
 {
@@ -224,7 +210,6 @@ static void gpuGP0Cmd_0xEx(gpu_unai_t &gpu_unai, u32 cmd_word)
     } break;
   }
 }
-#endif
 
 extern const unsigned char cmd_lengths[256];
 
@@ -635,20 +620,20 @@ void renderer_set_interlace(int enable, int is_odd)
 {
 }
 
-#ifndef TEST
-
-#include "../../frontend/plugin_lib.h"
-
+#include "../frontend/plugin_lib.h"
+// Handle any gpulib settings applicable to gpu_unai:
+//void renderer_set_config(const gpulib_config_t *config)
 void renderer_set_config(const struct rearmed_cbs *cbs)
 {
-  force_interlace = cbs->gpu_unai.lineskip;
+  gpu_unai.vram = (u16*)gpu.vram;
+  gpu_unai.config.lighting = !cbs->gpu_unai.no_light;
+  gpu_unai.config.blending = !cbs->gpu_unai.no_blend;
+  //force_interlace = cbs->gpu_unai.lineskip;
   //enableAbbeyHack = cbs->gpu_unai.abe_hack;
-  light = !cbs->gpu_unai.no_light;
-  blend = !cbs->gpu_unai.no_blend;
+  //light = !cbs->gpu_unai.no_light;
+  //blend = !cbs->gpu_unai.no_blend;
 
   //GPU_FrameBuffer = (u16 *)gpu.vram;
 }
-
-#endif
 
 // vim:shiftwidth=2:expandtab

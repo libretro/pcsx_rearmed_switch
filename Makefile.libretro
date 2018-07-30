@@ -21,7 +21,7 @@ AS ?= as
 CC_AS ?= $(CC)
 CFLAGS ?=
 
-CFLAGS += -DINLINE="static __inline__" -Dasm="__asm__ __volatile__"
+CFLAGS += -DINLINE="static __inline__" -Dasm="__asm__ __volatile__" -DUSE_GPULIB=1
 
 TARGET_NAME := pcsx_rearmed
 GIT_VERSION := " $(shell git rev-parse --short HEAD || echo unknown)"

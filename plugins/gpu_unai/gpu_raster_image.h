@@ -188,11 +188,6 @@ void gpuClearImage(PtrUnion packet)
 	else
 	{
 		u32* pixel = (u32*)gpu_unai.vram + ((FRAME_OFFSET(x0, y0))>>1);
-	    if (!pixel)
-        {
-            printf("no pixel\n");
-            return;
-        }
 		u32 rgb = GPU_RGB16(packet.U4[0]);
 		rgb |= (rgb<<16);
 		if (w0&1)
