@@ -41,11 +41,6 @@
 #include "3ds/3ds_utils.h"
 #endif
 
-//#ifdef SWITCH
-//#include <switch.h>
-//#endif
-
-
 #define PORTS_NUMBER 8
 
 #ifndef MIN

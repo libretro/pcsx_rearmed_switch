@@ -859,4 +859,3 @@ void pl_init(void)
 	psxMapHook = pl_emu_mmap;
 	psxUnmapHook = pl_emu_munmap;
 }
-

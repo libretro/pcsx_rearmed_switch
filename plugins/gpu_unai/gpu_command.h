@@ -46,7 +46,7 @@ void gpuSetTexture(u16 tpage)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-inline void gpuSetCLUT(u16 clut)
+INLINE void gpuSetCLUT(u16 clut)
 {
 	gpu_unai.CBA = &((u16*)gpu_unai.vram)[(clut & 0x7FFF) << 4];
 }
