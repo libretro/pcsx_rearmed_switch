@@ -9,7 +9,7 @@ else
 ifeq ($(platform), vita)
 CFLAGS += -O3 -DNDEBUG
 else
-CFLAGS += -O2 -DNDEBUG
+CFLAGS += -O3 -DNDEBUG
 endif
 endif
 CXXFLAGS += $(CFLAGS)
