@@ -44,7 +44,7 @@ EXTRA_LDFLAGS =
 ifeq ($(platform), unix)
 	TARGET := $(TARGET_NAME)_libretro.so
 	fpic := -fPIC
-	CFLAGS += -O3 -ffast-math
+	CFLAGS += -O3 -ffast-math -D__arm64__ -D__ARM_NEON__ -DARM -D__aarch64__=1 
 ifneq ($(findstring SunOS,$(shell uname -s)),)
 	CC = gcc
 endif
