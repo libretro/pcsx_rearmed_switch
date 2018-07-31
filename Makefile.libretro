@@ -44,6 +44,9 @@ EXTRA_LDFLAGS =
 ifeq ($(platform), unix)
 	TARGET := $(TARGET_NAME)_libretro.so
 	fpic := -fPIC
+	ARCH := arm64
+    BUILTIN_GPU = unai
+    HAVE_VFS_FD = 0
 	CFLAGS += -O3 -ffast-math -D__arm64__ -D__ARM_NEON__ -DARM -D__aarch64__=1 
 ifneq ($(findstring SunOS,$(shell uname -s)),)
 	CC = gcc
