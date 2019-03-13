@@ -107,7 +107,7 @@ void gpuDrawS16(PtrUnion packet)
 	    ((u0 | v0) & 15) || !(gpu_unai.TextureWindow[2] & gpu_unai.TextureWindow[3] & 8)) {
 		// send corner cases to general handler
 		packet.U4[3] = 0x00100010;
-		gpuDrawS(gpuSpriteSpanFn<0x20>);
+		gpuDrawS(packet, gpuSpriteSpanFn<0x20>);
 		return;
 	}
 

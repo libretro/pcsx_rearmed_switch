@@ -47,7 +47,7 @@ ifeq ($(platform), unix)
     #ARCH := arm64
     #BUILTIN_GPU = unai
     #HAVE_VFS_FD = 0
-    CFLAGS = -DINLINE=inline -DUSE_GPULIB=1
+    CFLAGS = -DINLINE="static __inline__" -DUSE_GPULIB=1
 ifneq ($(findstring SunOS,$(shell uname -s)),)
 	CC = gcc
 endif
