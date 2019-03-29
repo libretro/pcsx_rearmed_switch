@@ -305,14 +305,14 @@ static void menu_sync_config(void)
 	cycle_multiplier = 10000 / psx_clock;
 
 	switch (in_type_sel1) {
-	case 1:  in_type1 = PSE_PAD_TYPE_ANALOGPAD; break;
-	case 2:  in_type1 = PSE_PAD_TYPE_NEGCON;    break;
-	default: in_type1 = PSE_PAD_TYPE_STANDARD;
+	case 1:  in_type[0] = PSE_PAD_TYPE_ANALOGPAD; break;
+	case 2:  in_type[0] = PSE_PAD_TYPE_NEGCON;    break;
+	default: in_type[0] = PSE_PAD_TYPE_STANDARD;
 	}
 	switch (in_type_sel2) {
-	case 1:  in_type2 = PSE_PAD_TYPE_ANALOGPAD; break;
-	case 2:  in_type2 = PSE_PAD_TYPE_NEGCON;    break;
-	default: in_type2 = PSE_PAD_TYPE_STANDARD;
+	case 1:  in_type[1] = PSE_PAD_TYPE_ANALOGPAD; break;
+	case 2:  in_type[1] = PSE_PAD_TYPE_NEGCON;    break;
+	default: in_type[1] = PSE_PAD_TYPE_STANDARD;
 	}
 	if (in_evdev_allow_abs_only != allow_abs_only_old) {
 		in_probe();
@@ -422,6 +422,12 @@ static const struct {
 	CE_INTVAL_V(frameskip, 3),
 	CE_INTVAL_P(gpu_peops.iUseDither),
 	CE_INTVAL_P(gpu_peops.dwActFixes),
+	CE_INTVAL_P(gpu_unai.ilace_force),
+	CE_INTVAL_P(gpu_unai.pixel_skip),
+	CE_INTVAL_P(gpu_unai.lighting),
+	CE_INTVAL_P(gpu_unai.fast_lighting),
+	CE_INTVAL_P(gpu_unai.blending),
+	CE_INTVAL_P(gpu_unai.dithering),
 	CE_INTVAL_P(gpu_unai.lineskip),
 	CE_INTVAL_P(gpu_unai.abe_hack),
 	CE_INTVAL_P(gpu_unai.no_light),
@@ -440,6 +446,7 @@ static const struct {
 	CE_INTVAL_P(gpu_peopsgl.iTexGarbageCollection),
 	CE_INTVAL_P(gpu_peopsgl.dwActFixes),
 	CE_INTVAL(spu_config.iUseReverb),
+	CE_INTVAL(spu_config.idiablofix),
 	CE_INTVAL(spu_config.iXAPitch),
 	CE_INTVAL(spu_config.iUseInterpolation),
 	CE_INTVAL(spu_config.iTempo),
@@ -1357,10 +1364,16 @@ static int menu_loop_plugin_gpu_neon(int id, int keys)
 
 static menu_entry e_menu_plugin_gpu_unai[] =
 {
-	mee_onoff     ("Skip every 2nd line",        0, pl_rearmed_cbs.gpu_unai.lineskip, 1),
-	mee_onoff     ("Abe's Odyssey hack",         0, pl_rearmed_cbs.gpu_unai.abe_hack, 1),
-	mee_onoff     ("Disable lighting",           0, pl_rearmed_cbs.gpu_unai.no_light, 1),
-	mee_onoff     ("Disable blending",           0, pl_rearmed_cbs.gpu_unai.no_blend, 1),
+	//mee_onoff     ("Skip every 2nd line",        0, pl_rearmed_cbs.gpu_unai.lineskip, 1),
+	//mee_onoff     ("Abe's Odyssey hack",         0, pl_rearmed_cbs.gpu_unai.abe_hack, 1),
+	//mee_onoff     ("Disable lighting",           0, pl_rearmed_cbs.gpu_unai.no_light, 1),
+	//mee_onoff     ("Disable blending",           0, pl_rearmed_cbs.gpu_unai.no_blend, 1),
+	mee_onoff     ("Interlace",                  0, pl_rearmed_cbs.gpu_unai.ilace_force, 1),
+	mee_onoff     ("Dithering",                  0, pl_rearmed_cbs.gpu_unai.dithering, 1),
+	mee_onoff     ("Lighting",                   0, pl_rearmed_cbs.gpu_unai.lighting, 1),
+	mee_onoff     ("Fast lighting",              0, pl_rearmed_cbs.gpu_unai.fast_lighting, 1),
+	mee_onoff     ("Blending",                   0, pl_rearmed_cbs.gpu_unai.blending, 1),
+	mee_onoff     ("Pixel skip",                 0, pl_rearmed_cbs.gpu_unai.pixel_skip, 1),
 	mee_end,
 };
 
@@ -1451,6 +1464,7 @@ static menu_entry e_menu_plugin_spu[] =
 	mee_range_h   ("Volume boost",              0, volume_boost, -5, 30, h_spu_volboost),
 	mee_onoff     ("Reverb",                    0, spu_config.iUseReverb, 1),
 	mee_enum      ("Interpolation",             0, spu_config.iUseInterpolation, men_spu_interp),
+	mee_onoff     ("Diablo Music fix",          0, spu_config.idiablofix, 1),
 	mee_onoff     ("Adjust XA pitch",           0, spu_config.iXAPitch, 1),
 	mee_onoff_h   ("Adjust tempo",              0, spu_config.iTempo, 1, h_spu_tempo),
 	mee_end,

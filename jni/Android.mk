@@ -71,7 +71,7 @@ SOURCES_C += $(FRONTEND_DIR)/main.c \
 # dynarec
 SOURCES_C += $(DYNAREC_DIR)/backends/psx/emu_if.c
 
-COREFLAGS := -ffast-math -funroll-loops -DHAVE_LIBRETRO -DNO_FRONTEND -DFRONTEND_SUPPORTS_RGB565 -DANDROID -DREARMED -DUSE_GPULIB=1
+COREFLAGS := -ffast-math -funroll-loops -DHAVE_LIBRETRO -DNO_FRONTEND -DFRONTEND_SUPPORTS_RGB565 -DANDROID -DREARMED
 
 ifeq ($(TARGET_ARCH),arm)
   SOURCES_ASM := $(CORE_DIR)/gte_arm.S \
@@ -91,10 +91,14 @@ ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
                  $(FRONTEND_DIR)/cspace_neon.S
   SOURCES_C   += $(NEON_DIR)/psx_gpu_if.c
 else ifeq ($(TARGET_ARCH_ABI),armeabi)
+  COREFLAGS += -DUSE_GPULIB=1 -DGPU_UNAI
+  COREFLAGS += -DINLINE="static __inline__" -Dasm="__asm__ __volatile__"
   SOURCES_ASM += $(UNAI_DIR)/gpu_arm.S \
                  $(FRONTEND_DIR)/cspace_arm.S
   SOURCES_C += $(UNAI_DIR)/gpulib_if.cpp
 else
+  COREFLAGS += -DUSE_GPULIB=1 -DGPU_UNAI
+  COREFLAGS += -DINLINE="static __inline__" -Dasm="__asm__ __volatile__"
   SOURCES_C += $(UNAI_DIR)/gpulib_if.cpp
 endif
 

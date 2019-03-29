@@ -40,10 +40,6 @@ typedef s32 fixed;
 #define i2x(x) ((x)<<FIXED_BITS)
 #define x2i(x) ((x)>>FIXED_BITS)
 
-#ifndef INLINE
-#define INLINE GPU_INLINE
-#endif
-
 INLINE fixed FixedCeil(const fixed x)
 {
 	return (x + (fixed_ONE - 1)) & fixed_HIMASK;
