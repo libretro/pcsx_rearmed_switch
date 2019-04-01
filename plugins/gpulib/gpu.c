@@ -9,6 +9,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 //#include "../../libpcsxcore/plugins.h"    // For GPUFreeze_t, GPUScreenInfo_t
 #include "gpu.h"
@@ -219,10 +220,10 @@ long GPUinit(void)
   }
 #endif
 
-  extern uint32_t hSyncCount;         // in psxcounters.cpp
-  extern uint32_t frame_counter;      // in psxcounters.cpp
-  gpu.state.hcnt = &hSyncCount;
-  gpu.state.frame_count = &frame_counter;
+  //extern uint32_t hSyncCount;         // in psxcounters.cpp
+  //extern uint32_t frame_counter;      // in psxcounters.cpp
+  //gpu.state.hcnt = &hSyncCount;
+  //gpu.state.frame_count = &frame_counter;
 
   int ret;
   ret  = vout_init();

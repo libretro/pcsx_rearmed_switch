@@ -36,17 +36,20 @@
                                    //  that wouldn't end up displayed on
                                    //  low-res screen using simple downscaler)
 
-#ifdef __arm__
-#ifndef ENABLE_GPU_ARMV7
+//#ifdef __arm__
+//#ifndef ENABLE_GPU_ARMV7
 /* ARMv5 */
-#include "gpu_inner_blend_arm5.h"
-#else
+//#include "gpu_inner_blend_arm5.h"
+//#else
 /* ARMv7 optimized */
-#include "gpu_inner_blend_arm7.h"
-#endif
-#else
+//#include "gpu_inner_blend_arm7.h"
+//#endif
+//#else
+//#include "gpu_inner_blend.h"
+//#endif
+
+// TODO: use the arm-optimized gpu_inner_blends for arm builds
 #include "gpu_inner_blend.h"
-#endif
 
 #include "gpu_inner_quantization.h"
 #include "gpu_inner_light.h"

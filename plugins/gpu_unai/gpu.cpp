@@ -22,7 +22,7 @@
 #include <stddef.h>
 #include "plugins.h"
 #include "psxcommon.h"
-#include "port.h"
+//#include "port.h"
 #include "gpu_unai.h"
 
 #define GPU_INLINE static inline __attribute__((always_inline))
