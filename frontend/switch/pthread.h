@@ -51,30 +51,30 @@ typedef struct
    void *tls_tp; /* !! Offset needs to be TLS+0x1F8 for __aarch64_read_tp !! */
 } ThreadVars;
 
-static INLINE ThreadVars *getThreadVars(void)
+INLINE ThreadVars *getThreadVars(void)
 {
    return (ThreadVars *)((u8 *)armGetTls() + 0x1E0);
 }
 
-static INLINE Thread threadGetCurrent(void)
+INLINE Thread threadGetCurrent(void)
 {
    ThreadVars *tv = getThreadVars();
    return *tv->thread_ptr;
 }
 
-static INLINE pthread_t pthread_self(void)
+INLINE pthread_t pthread_self(void)
 {
    return threadGetCurrent();
 }
 
-static INLINE int pthread_mutex_init(pthread_mutex_t *mutex, const pthread_mutexattr_t *attr)
+INLINE int pthread_mutex_init(pthread_mutex_t *mutex, const pthread_mutexattr_t *attr)
 {
    mutexInit(mutex);
 
    return 0;
 }
 
-static INLINE int pthread_mutex_destroy(pthread_mutex_t *mutex)
+INLINE int pthread_mutex_destroy(pthread_mutex_t *mutex)
 {
    /* Nothing */
    *mutex = 0;
@@ -82,13 +82,13 @@ static INLINE int pthread_mutex_destroy(pthread_mutex_t *mutex)
    return 0;
 }
 
-static INLINE int pthread_mutex_lock(pthread_mutex_t *mutex)
+INLINE int pthread_mutex_lock(pthread_mutex_t *mutex)
 {
    mutexLock(mutex);
    return 0;
 }
 
-static INLINE int pthread_mutex_unlock(pthread_mutex_t *mutex)
+INLINE int pthread_mutex_unlock(pthread_mutex_t *mutex)
 {
    mutexUnlock(mutex);
 
@@ -102,7 +102,7 @@ INLINE int pthread_detach(pthread_t thread)
    return 0;
 }
 
-static INLINE int pthread_join(pthread_t thread, void **retval)
+INLINE int pthread_join(pthread_t thread, void **retval)
 {
    printf("[Threading]: Waiting for Thread Exit\n");
    threadWaitForExit(&thread);
@@ -111,39 +111,39 @@ static INLINE int pthread_join(pthread_t thread, void **retval)
    return 0;
 }
 
-static INLINE int pthread_mutex_trylock(pthread_mutex_t *mutex)
+INLINE int pthread_mutex_trylock(pthread_mutex_t *mutex)
 {
    return mutexTryLock(mutex) ? 0 : 1;
 }
 
-static INLINE int pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex)
+INLINE int pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex)
 {
    condvarWait(cond, mutex);
 
    return 0;
 }
 
-static INLINE int pthread_cond_timedwait(pthread_cond_t *cond, pthread_mutex_t *mutex, const struct timespec *abstime)
+INLINE int pthread_cond_timedwait(pthread_cond_t *cond, pthread_mutex_t *mutex, const struct timespec *abstime)
 {
    condvarWaitTimeout(cond, mutex, abstime->tv_nsec);
 
    return 0;
 }
 
-static INLINE int pthread_cond_init(pthread_cond_t *cond, const pthread_condattr_t *attr)
+INLINE int pthread_cond_init(pthread_cond_t *cond, const pthread_condattr_t *attr)
 {
    condvarInit(cond);
 
    return 0;
 }
 
-static INLINE int pthread_cond_signal(pthread_cond_t *cond)
+INLINE int pthread_cond_signal(pthread_cond_t *cond)
 {
    condvarWakeOne(cond);
    return 0;
 }
 
-static INLINE int pthread_cond_broadcast(pthread_cond_t *cond)
+INLINE int pthread_cond_broadcast(pthread_cond_t *cond)
 {
    condvarWakeAll(cond);
    return 0;
