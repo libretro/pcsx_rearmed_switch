@@ -97,6 +97,7 @@ else ifeq ($(platform), libnx)
    CFLAGS += -D__SWITCH__
    CFLAGS += -DARM -D__aarch64__=1 -march=armv8-a -mtune=cortex-a57 -mtp=soft -DHAVE_INTTYPES -DLSB_FIRST -ffast-math -mcpu=cortex-a57+crc+fp+simd -ffunction-sections
    CFLAGS += -ftree-vectorize
+   CFLAGS += -Ifrontend/switch -ftree-vectorize
    LIBPTHREAD :=
    USE_DYNAREC = 0
    STATIC_LINKING=1
