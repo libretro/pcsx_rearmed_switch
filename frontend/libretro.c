@@ -495,7 +495,11 @@ void retro_set_environment(retro_environment_t cb)
       { "pcsx_rearmed_negcon_deadzone", "NegCon Twist Deadzone (percent); 0|5|10|15|20|25|30" },
       { "pcsx_rearmed_negcon_response", "NegCon Twist Response; linear|quadratic|cubic" },
       { "pcsx_rearmed_vibration", "Enable Vibration; enabled|disabled" },
+#ifdef HAVE_LIBNX
+      { "pcsx_rearmed_dithering", "Enable Dithering; disabled|enabled" },
+#else
       { "pcsx_rearmed_dithering", "Enable Dithering; enabled|disabled" },
+#endif
 #ifdef GPU_UNAI
       { "pcsx_rearmed_blending", "Enable Blending; enabled|disabled" },
       { "pcsx_rearmed_lighting", "Enable Lighting; enabled|disabled" },
